@@ -1,0 +1,100 @@
+---
+title: "Probability exercises"
+author: "SMWadgymar, KELevasseur, DMCharifson"
+date: "2024-28-10"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+####Exercises
+
+1) Simulating coin flips: Generate 10 separate random flips with probability 0.7 of producing heads.
+
+```{r}
+
+```
+
+Q: What kind of values do you see and what do they represent?
+
+A: 
+
+
+2) Simulating draws from a binomial distribution: Generate 100 occurrences of flipping 10 coins, each with 70% probability of producing heads. Produce a table of the probability distribution that you generate (hint: your table should report probabilities or proportions and not counts. There are two types of tables we discussed how to make in R that use different functions).
+
+```{r}
+
+```
+
+Q: What kind of values do you produce and what do they represent? Plot a histogram and describe the shape that your probability distribution takes.
+
+A: 
+
+```{r}
+hist(???, freq=F)
+```
+
+Q: What does the freq=F argument mean? Hint: make the same graph on a second line of code, but remove the freq=F part.
+
+A:
+
+
+3) Calculate the exact probability that 2 heads will arise from 10 coin flips with a 70% probability of coming up tails.Hint: What function would you use to get the value of an exact probability of a particular outcome?  
+
+```{r}
+
+```
+
+Q: Compare your answer with a simulation of 10,000 trials. Do the two approaches yield similar results?
+
+A: 
+
+```{r}
+
+```
+
+
+
+
+4) Calculate the cumulative probability that at least five coins out of 10 are heads with a 30% probability of coming up heads.  
+
+```{r}
+
+```
+
+Q: Compare your answer with a simulation of 10,000 trials.  Do the two approaches yield similar results?
+
+Note you previously used mean(rbinom(???)==???) to figure out the probability of a single occurrence. How might you modify that structure to find a cumulative probability?
+
+A: 
+```{r}
+
+```
+
+
+
+
+5) Repeat the simulation you ran in exercise (3) where you estimated the exact probability that two heads will occur with 10, 100, 1,000, 10,000, and 100,000 trials. Produce a plot depicting the number of trails on the x-axis and the associated probabilities you calculated on the y-axis.  
+
+Hint: The c() function lets you combine values into a vector or list. You will need to make a vector of probabilities for the y axis and a vector of your sample sizes for the x axis using c(#, #, #, #, #). Remember that you can assign your vectors names to make coding easier, like we did in the previous exercise (flips <- rbinom(???)). Just be sure to give each simulation a unique name. 
+
+```{r}
+
+```
+
+
+Produce a second plot but this time log-transform the number of trials. Make sure to adjust your axis labels appropriately.  
+
+Note: to take the log of a values or a vector of values use the function log(). The arguments are log(x, base) where x is the value/vector of values and base is the specified base of the logarithm. So log(x, 10) would be log base 10. The default if you do not specify "base" will be a natural logarithm. Additionally, there is another function, log10() that is automatically log base 10.You can use either a natural log or log base 10 for this problem.
+
+```{r}
+
+```
+
+
+Q: Which simulation yields a result most similar to the exact probability? What pattern do you see in your first graph? What does your second graph reveal that your first graph did not?
+
+A: 
+
+
+

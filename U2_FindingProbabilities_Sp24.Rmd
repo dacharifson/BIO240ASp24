@@ -1,0 +1,101 @@
+---
+title: "Finding probabilities"
+author: "SMWadgymar, KELevasseur, DMCharifson"
+date: '2024-02-10'
+output: html_document
+---
+
+
+The binomial distribution is the distribution that describes the frequency of outcomes for each set of trials (or draws or flips of a coin) where there are exactly two possible outcomes for each trial (e.g. heads or tails, survives or dies, yes or no, etc.). The binomial distribution includes two parameters: n is the number of trials or flips and p is the probability that each is heads (for fair coins, 0.5).  
+
+A variable is binomially distributed if (1) the trials/flips are independent, (2) the number of trials/flips is fixed, (3) each trial/flip outcome can be classified as success or failure, and (4) the probability of success is the same for each trial/flip.
+
+R has many built-in functions that allow us to draw samples from well-characterized distributions. We’ll make use of three of those functions for the binomial distribution here: ‘rbinom’, ‘dbinom’, and ‘pbinom’. Importantly, we will make use of these functions to examine probabilities in two ways. First, we’ll run simulations in Questions 6-9, as we did before with rbimon. Simulations are digital experiments. We use them to conduct large, replicated experiments that would not be possible in real life, and as in real life, we want our outcomes to be the product of random chance. The goal is to run enough simulations that the probabilities that we estimate are likely very close approximations of the true probabilities (which are often unknown). For our second approach, we will calculate exact probabilities in Questions 10-11. We can do this because we are drawing our samples from a well-characterized distribution where the exact probabilities are known.
+
+
+####Finding probabilities through simulation
+
+6) Simulate 100000 draws each with 10 fair coins and save the outcome as 'flips'.
+
+```{r}
+flips<-rbinom(???, ???, ???)
+
+#Note: you can save most things like this. Including shortening long/tedious inputs like: dds.discr$expenditures you could have saved that as a value that you name, like: expend <- dds.discr$expenditures. Then you can just use the briefer "expend"
+```
+
+Q: How many values are stored in the variable called flips?  What is your interpretation of each value?
+
+A: 
+
+
+7) Let's find the fraction of draws where 5 heads occurred.
+
+```{r}
+mean(flips==5)
+
+#Just a little extra context if you are interested in what this code does:
+#flips==5 turns the vector of the 10000 draws into TRUE/FALSE statements. mean() here interacts with such a vector a bit differently than usual, turning all the True statements into 1 and all the False statements into 0. Thus the mean of this list of 0's and 1's will be proportional to the number of draws that equals 5 (e.g., # of trues)
+```
+
+Q: Which do you expect will be lower: the probability that 3 out of 10 flips will be heads or the probability that 5 out of 10 flips will be heads? Why?  
+
+A: 
+
+
+8) Next, calculate the probability that 3 out of 10 flips will be heads. This reflects the probability that this outcome will occur, and is called the density of this distribution at the point where x=3.
+
+```{r}
+
+```
+
+Q: How does the probability that 3/10 flips will be heads compare to the probability that 5/10 flips will be heads?
+
+A:
+
+
+9) Let's find the cumulative probability that heads will occur 4 or fewer times during each draw. This is referred to as the cumulative probability because it sums up the probability that the number of heads is 0, 1, 2, 3, or 4 out of 10 flips.
+
+```{r}
+mean(flips<=4)
+
+#Note: <= indicates "Less than or equal to" while < indicates "Less than"
+```
+
+Q: How would you adjust this line of code to estimate the cumulative probability that heads will occur 6 or more times?
+
+A:
+```{r}
+
+```
+
+
+
+####Finding the exact probabilities
+
+10) The dbinom function estimates the exact probability density at a given point. The arguments here are the density being estimated (i.e., the value you are calculating a probability for, like 5 heads in a toss of 10 coins), the number of coins, and the probability of producing a head. Note that the order and type of arguments used here do not match the order and type of arguments that you used for the 'rbinom' function.
+
+```{r}
+dbinom(5, 10, 0.5)
+```
+
+Q: How does this command compare to the steps you took for question 6 and 7 above? Are the estimates comparable? Why or why not?
+
+A: 
+
+
+11) Now let's estimate the exact cumulative probability density for a given range.The cumulative probability density is the summation of probabilities across the distribution. Thus it always increases as the value of the variable increases. It can be used to give the probability of the area under the distribution curve greater or less than a certain value. In other words it can be used to give the probability of getting a four heads or less (what you did for question 9).
+
+The arguments here are the density being estimated, the number of coins, and the probability of producing a head. Note that the order and type of arguments used here do not match the order and type of arguments that you used for the 'rbinom' function.
+
+```{r}
+pbinom(4, 10, 0.5)
+
+#Note: the default is to examine the lower tail of the distribution or the probabilities that are less than or equal to 4 in this case. 
+#You can modify it to examine the upper tail by adding the argument "lower.tail=FALSE". Which will show you probabilities greater than or equal to 4.
+```
+
+Q: How does this command compare to the steps you took for question 9? Are the estimates comparable? Why or why not?
+
+A: 
+
+
