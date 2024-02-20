@@ -1,0 +1,89 @@
+---
+title: 'Probability: joint events'
+author: "KELevasseur, SMWadgymar DMCharifson"
+date: '2023-02-17'
+output: html_document
+---
+
+####Background: joint events
+
+1) Let's simulate two events below and name them A and B.
+
+```{r}
+A<-rbinom(100000, 1, 0.5)
+B<-rbinom(100000, 1, 0.5)
+```
+
+Q: Explain the rbinom example above (how would you explain what this function is doing to a friend outside of class)
+
+A: 
+
+
+2) To get the probability of event A occurring from your simulation (landing a heads for example, so equaling 1), you can use the sum function and divide it by the number of observations (n in our rbinom function). Complete the code below. Do the same for event B.
+
+A:
+```{r}
+sum(???)/???
+
+sum(???)/???
+
+```
+
+
+
+We can implement the General Addition Rule for simulations in R, where the vertical line symbol here (|) means 'or'. Important note: sometimes symbols in R are used in a very precise and different way. Remember that we used (X|Y) for the probability of X given Y in class and in the textbook. Just remember that in R (X|Y) would instead mean "X or Y".
+
+```{r}
+mean(A|B)
+```
+
+
+We can also implement the Multiplication Rule for Independent Events, where the & symbol means 'and':
+
+```{r}
+mean(A&B)
+```
+
+
+3) If events A and B are independent, and A has a 50% chance of happening and B has a 30% chance of happening, what is the probability that they will both happen?  Use simulations and the code mentioned above to answer this question.The number of simulations is up to you (as it is not specified above), but choose a number that would be reasonable (not too small)
+
+Note: You can save these as values as values so they can be called easily later on. But note that if you call them A and B it will overwrite the previous A and B used in part 1. Many of you have come across this already, but be aware of this. Note: this is okay for this exercise. But this would be bad if we needed to reference part 1 again later on. Best practice would be to name them something unique like A.3 and B.3 (the .3 signifying that it is tied to part 3)
+
+```{r}
+
+```
+
+
+4) Expanding on exercise (3), event C has a 70% chance of happening.  What is the probability that events A, B, and C all happen?
+
+```{r}
+
+```
+
+
+5) If events A and B are independent, and A has a 40% chance of coming up heads and B has a 75% chance of coming up heads, what is the probability that either A or B will come up heads?  Use simulations to answer this question.
+
+```{r}
+
+```
+
+
+6) Suppose X is a random binomially distributed variable (10, 0.3) and Y is another random binomially distributed variable (10, 0.65), and that they are independent.  What is the probability that either of these variables is less than or equal to 5?  Estimate this probability both using simulations of 10,000 trials and by calculating exact cumulative densities. 
+
+Hint for doing this using simulations: How have we previously found values that are greater/less than or equal to a specified value? Specifically greater/less or equal to some specified value when dealing with simulations. You will need to incorporate that syntax/structure here in some way.
+
+Using simulations:
+```{r}
+
+```
+
+
+Calculating exact cumulative densities:
+```{r}
+
+```
+
+Q: How do these two approaches compare?
+
+A: 
+
