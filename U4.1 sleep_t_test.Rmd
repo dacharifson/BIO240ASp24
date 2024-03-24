@@ -1,0 +1,156 @@
+---
+title: "t Tests, Sleep Data"
+author: "NAME"
+date: "2024-03-24"
+output:
+  pdf_document: default
+  
+---
+
+A 2016 study from the CDC reported that more than a third of American adults are not getting enough sleep on a regular basis. The national sleep foundation recommends that adults need between 7 to 9 hours of sleep per night to function well. Consistent sleep deprivation is known to increase risk of health problems, negatively affect cognitive processes, and contribute to depressive symptoms. 
+
+The dataset nhanes.samp.adult contains sleep information for 135 participants ages 21 years of older. The variable SleepHrsNight contains the self-reported number of hours a participant usually gets at night on weekdays or workdays.
+
+
+Load the data
+```{r}
+library(oibiostat)
+data("nhanes.samp.adult")
+```
+
+Q1) Using numerical and graphical summaries, describe the distribution of nightly sleep in the dataset.  In addition, use a Shapiro test to formally test for normality.  For this test, a significant result indicates significant skew. The null hypothesis is the distribution is the same as a normal distribution. The alternative hypothesis is the distribution deviates from a normal distribution
+
+```{r}
+hist(???)
+```
+
+
+Note, for the shapiro.test() function you will need to input a value that contains the variable of interest (nightly sleep, the same as the histogram)
+```{r}
+shapiro.test(???)
+```
+
+A little extra context for the Shapiro test: it is really sensitive when the sample size is large. Sometimes it can detect a really minimal (but statistically significant) difference from the normal distribution if the sample size is moderately large (n > 70). So it sometimes it is better to take a visual look and use that to draw your conclusion, as a shapiro test can be too sensitive.
+
+Answer for Q1: 
+
+
+
+
+Q2) Conduct a hypothesis test to assess whether on average, American adults are getting enough sleep. Let the null value (for comparison) be 8 hours.
+
+(a) Formulate null and alternative hypotheses
+
+A: 
+
+
+(b) Specify a significance level, alpha
+
+A: 
+
+(c) Calculate the test statistic. Use R as a calculator to find the test statistic, although you should use functions to find sample statistics like the mean and standard deviation.
+
+Hint: There are two ways that you can count the number of observations in a variable depending on the type of object you want to use. You can use the function nrow("data frame") to count the number of rows (observations) within a column in a data frame. Or you could use length("vector for variable") if you want the count of values within a vector. 
+
+```{r}
+
+```
+
+
+
+(d) Calculate the p-value in R. Although there is a large number of samples, use the t-distribution to calculate the the p-value to account for the fact that the population sd is unknown.In general, it is appropriate to default to the t-distribution for t tests. 
+
+```{r}
+
+```
+
+
+
+
+Q3) Instead of calculating the test statistic and p-value as you did above you can also use the function t.test() to calculate the p-value:
+
+(a) Complete the function below by inputting the data, mu, and what the alternative hypothesis is (you can enter here "two.sided", "less", or "greater". Note that the quotation marks are necessary). Do the results below match that of what you found?
+```{r}
+t.test(data, mu = ?, alternative = ?)
+```
+
+(b): Interpret the p-value in the context of the decided alpha.
+
+A: 
+
+
+(c): Notice above what t.test returns. How can you use t.test to find the 95% confidence interval?
+
+A: 
+
+
+
+
+
+Q4) We can use the same function to conduct a paired t-test.  Let's see how consistent the participants' systolic blood pressure is across consecutive readings (labeled as BPSys1 and BPSys2).
+
+In the code chunk below, modify the code to perform a test that compares our two variables of interest.  Your first two arguments will be those variables. For the alternative argument, enter in either "two.sided" or "less" or "greater" as appropriate.
+
+```{r}
+t.test(???, ???, paired=TRUE, alternative="???")
+```
+
+
+(a): Interpret the p-value in the context of the decided alpha.
+
+A:
+
+
+(b): What is the interpretation of the 95% confidence interval?
+
+A:
+
+
+
+Q5) We can also use the t.test function to conduct a test assessing differences between two means.  The DiabetesAge variable reports the age of the study participant when they were first told they had diabetes.  Let's see if the age at onset of diabetes differs between people who have smoked at least 100 cigarettes in their entire life (from the Smoke100 variable)
+
+First, let's see if the variance is approximately equal between the two groups.  There are many functions that can do this for you.  Here is one we have used before.
+
+
+```{r}
+
+tapply(nhanes.samp.adult$DiabetesAge, nhanes.samp.adult$Smoke100, var, na.rm=T)
+
+#Note: na.rm=T is a common argument that can be added to many different functions. Sometimes we have missing data or "NA' (Not applicable). Many R functions cannot handle this well, but the argument na.rm=T will cause the function to ignore NA's. You may come across NA's in some of the data sets for the final project, so remember this!
+
+#if you want you can try that line of code without na.rm=T and see what happens.
+
+```
+
+You can also use a variance test to assess whether variances are roughly equal.  A significant result indicates significantly different variances (Null: Variance 1 = Variance 2, Alternative: variance 1 does not equal variance 2). You have to subset the data by smoke100 status to see if the age of diabetes differs between groups.  The arguments for var.test are the age variables for the two different groups.
+
+```{r}
+Smoke_YES<subset(nhanes.samp.adult, Smoke100=="???")
+Smoke_NO<subset(???)
+
+var.test(???, ???) #The function var.test() conducts a F test, a comparision of the variances of two samples.
+```
+
+
+(a) Does there seem to be approximately equal variance between the two groups?  Is a two-sample t-test appropriate?
+
+A: 
+
+
+In the code chunk below, modify the code to perform a test that assesses whether the age at onset of diabetes varies between people who have or haven't smoked 100 cigarettes in their lifetime. Think about which variable is your response vs. explanatory variable. For the alternative argument, enter in either "two.sided" or "one.sided" as appropriate.
+
+Note: You should do a t-test for unequal variances here (even if you detected equal variances before). In R, unequal variances (or a Welch's t Test) is the default. Under most cases there isn't going to be a major enough difference in the p-values given by each test. So many just default to the unequal variance t test no matter what and that is perfectly fine! However, if you want to try a t test for equal variances you would add the term: var.equal=TRUE as an additional input. When it comes to the exams I suggest just sticking with the unequal variance t-test since it is what we covered in class, but if you want to use the other option be sure to specify that is what you are doing!
+
+```{r}
+t.test(y~x, alternative="")
+
+```
+
+
+(b): Interpret the p-value in the context of the decided alpha.
+
+A:
+
+(c): What is the interpretation of the 95% confidence interval?
+
+A:
