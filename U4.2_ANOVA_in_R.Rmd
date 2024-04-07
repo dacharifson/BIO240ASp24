@@ -1,0 +1,138 @@
+---
+title: "U4.2_ANOVA_in_R"
+author: "David Charifson"
+date: "4/5/2024"
+output: pdf_document
+---
+
+The following is an example of a full ANOVA analysis. Almost all the code is given to you. There are a couple of places where you will need to add the inputs. And some questions that will be asked during class that you may want to answer for your own reference. Feel free to take any additional notes on this .Rmd file. 
+
+We will run through (1) Assumptions of the ANOVA, (2) The ANOVA itself, and (3) Post-hoc tests
+
+This study examined the effect of food supplementation on fish growth (in mass) in a hatchery. There are three different groups for different levels of supplementation (Low, Medium, High). We could ask the question: Does the amount of food supplementation (low, medium, high) affect growth rates?
+
+The data is contained in a .csv file (Fisheries.csv) that can be found in the data folder within the BIO240ASp24 folder in JupyterHub. You will need to Import the dataset. To do this click on Fisheries.csv. Then you should see two options. Click "Import Dataset", then a new window should pop up, click "Import" in the lower right corner. If done, the data frame should now appear in the R environment. 
+
+##############################################
+(1) Assumptions of ANOVA
+
+Before we test assumptions of ANOVA you may want to know summary statistics regarding the data. Three functions are performed for each which gives us several summary stats, including the mean, median, IQR, min, max, standard deviation, and sample size within each treatment group. 
+
+```{r}
+#for the Low Treatment:
+summary(Fisheries$Growth[Fisheries$Treatment=="Low"]) #Summary stats for Low treatment
+sd(Fisheries$Growth[Fisheries$Treatment=="Low"]) #Standard deviation for Low treatment
+length(Fisheries$Growth[Fisheries$Treatment=="Low"]) #Number of observations in the low group
+```
+```{r}
+#for the Med Treatment:
+summary(Fisheries$Growth[Fisheries$Treatment=="Med"]) #Summary stats for medium treatment
+sd(Fisheries$Growth[Fisheries$Treatment=="Med"]) #Standard deviation for medium treatment
+length(Fisheries$Growth[Fisheries$Treatment=="Med"]) #Number of observations in the medium group
+```
+
+```{r}
+#for the High Treatment:
+summary(Fisheries$Growth[Fisheries$Treatment=="High"]) #Summary stats for high treatment
+sd(Fisheries$Growth[Fisheries$Treatment=="High"]) #Standard deviation for high treatment
+length(Fisheries$Growth[Fisheries$Treatment=="High"]) #Number of observations in the high group
+```
+
+The assumptions of ANOVA that we can test include Normality (for each group separately) and constancy of variances among the groups. Each of these can be examined in multiple ways. Here are a few examples, but you do not necessarily need to do all of these as a check. You may have your own preferences!
+
+Normality may be assessed visually using histograms, qq plots, or even box plots. Here is a QQ plot example, since we have not previously done one in R!
+
+```{r}
+#QQ plot for the low treatment
+#To make a qq plot you need to use two functions. First, qqnorm(), then qqline()
+#qqnorm() makes the graph, with the data (theoretical quantile vs sample quantiles)
+#qqline() adds the line that represents what we would see with the ideal normal distribution
+#for both functions, the minimum input is the variable of interest.
+#In this case it is growth for the low treatment (subset to be only "Low")
+qqnorm(Fisheries$Growth[Fisheries$Treatment=="Low"])
+qqline(Fisheries$Growth[Fisheries$Treatment=="Low"])
+```
+
+```{r}
+#QQ Plot for growth in the medium treatment
+qqnorm(Fisheries$Growth[Fisheries$Treatment=="Med"])
+qqline(Fisheries$Growth[Fisheries$Treatment=="Med"])
+```
+
+```{r}
+#QQ Plot for growth in the medium treatment
+qqnorm(Fisheries$Growth[Fisheries$Treatment=="High"])
+qqline(Fisheries$Growth[Fisheries$Treatment=="High"])
+```
+
+
+You could also use a Shapiro-Wilk test to see if the data is normal or not. This gives you a p-value which may be more straightforward of an answer then looking at figures. However, a Shapiro-Wilk test will likely indicate non-normality when the sample size is very large (N>50), even if the actual difference is small and not particularly meaningful. So be cautious. 
+
+```{r}
+#A Shapiro-Wilk test or shapiro.test() can be used to test for normality.
+#Null Hypoth = the data is normally distributed
+#Alt Hypoth = the data is NOT normally distributed
+
+shapiro.test(Fisheries$Growth[Fisheries$Treatment=="Low"]) #For Low, p=0.4883, it is normal
+shapiro.test(Fisheries$Growth[Fisheries$Treatment=="Med"]) #For Med, p=0.9592, it is normal
+shapiro.test(Fisheries$Growth[Fisheries$Treatment=="High"]) #For High, p=0.0581, it is normal (but note that it is close to non-normal)
+```
+
+
+We also want to check to see if the variance is consistent across the three groups. For this we can use a boxplot and look at the relative size of the IQR.
+
+```{r}
+boxplot(Fisheries$Growth~Fisheries$Treatment) #Variances look pretty different visually
+```
+
+Alternatively, we can conduct a statistical test for variance across the groups, like a Bartlett test. The function bartlett.test() is used. And we give it "NumericalVariable~CategoricalVariable".
+
+```{r}
+#Null Hypoth = No difference among the variances of the groups
+#Alt Hypoth = There is a difference among the variances of the groups
+bartlett.test(Fisheries$Growth~Fisheries$Treatment) #p-value = 0.4275. Fail to reject Null. Variances are similar.
+
+#Note: bartlett tests only work well if the variable is not skewed (should be close to normal). If it is not normal, then bartletts test will likely tell you the variance is different even if it isn't.
+```
+
+##############################################
+(2) The ANOVA Test
+
+Now let's conduct the test. We will use the function aov(). There are other functions for ANOVA out there, but this one is simple to use, especially when we are doing One-way ANOVA. 
+
+The function is aov(Y~X). Where Y is our numeric variable and X is our categorical variable. 
+
+```{r}
+fish.anova <- aov(???~???)
+fish.anova
+```
+aov() does not directly give us the ANOVA table, F-statistic, and p-value (which we need!). But if we save the output of our aov() as an object (like fish.anova here) we can then give it to the function summary(). We have used summary() before, but if we give the result from the aov() model it will give us the ANOVA table. 
+
+
+```{r}
+summary(fish.anova)
+```
+What would we conclude here?
+
+A:
+
+
+##############################################
+(3) Post-hoc tests
+
+If we get a significant p-value from the one-way ANOVA we should follow up with a post-hoc test. A common post-hoc test is the Tukey HSD test. This test does pair-wise comparisons for each combination of groups and also corrects for multiple comparisons automatically.
+
+```{r}
+#Use the function TukeyHSD(). Give it your output from aov(), which we saved as fish.anova
+TukeyHSD(fish.anova)
+```
+
+The output tells us the difference (diff) between the two groups. A positive value means that the first group mentioned (like "Med" in this particular output) is greater than the second group mentioned (like "Low"). A negative value means that the first group mentioned (like "Low") is less than the second group (like "High")
+
+It also tells us the upper (upr) and lower (lwr) bounds of the confidence interval for each test.
+
+And it give the p-value adjusted for multiple comparisons (p adj). Note that the Tukey test adjusts the p-value, not the alpha. The alpha is still 0.05. This is different from a Bonferroni correction (the alpha is adjusted to a lower value; 0.05/(number of comparisons))
+
+So what do we conclude here? 
+
+A: 
