@@ -1,0 +1,44 @@
+---
+title: "How to use read.csv()"
+author: "David Charifson"
+date: "4/9/2024"
+output: pdf_document
+---
+
+You will need to start your exploratory analysis off with a particular function for it to knit the document properly, read.csv().
+
+We previously have imported data right from JupyterHub and I have instructed you on how to upload data via the guide in the Final Project folder. However, RMarkdown (apparently...) requires that you hard-code the import into the rmarkdown file itself using the function read.csv().
+
+read.csv() is another way to import data. A more direct way. And it is required in order to knit the file. You will basically specify the file path/directory to the file. It will still require you to import the data into JupyterHub.
+
+The exact file path will differ from student to student as each person has a unique file path. But the structure should be pretty similar. 
+
+For example, this is the path for me to get to the Fisheries.csv we used for the ANOVA exercise.
+fish <- read.csv("/home/DAVIDSON/dacharifson/Workspace/BIO240A/BIO240ASp24/Data/Fisheries.csv")
+
+So you will need to use read.csv as your first line of code in your exploratory analysis. 
+
+```{r}
+#here is an example code for data uploaded to the data folder in JupyterHub
+#Note that it is case sensitive, is contained in quotation marks, and starts with / and ends with the name of the csv file, including the file type (.csv)
+
+#you will need to replace the first set of ??? with your Davidson user ID (all lowercase)
+#and you will need to replace the second set of ??? with the name of the csv file. 
+
+data <- read.csv("/home/DAVIDSON/???/Workspace/BIO240A/BIO240ASp24/Data/???.csv")
+
+#If you place your .csv file for the final project in the data file you can copy and paste this code into your exploratory analysis as the first code chunk, then replace the ??? with the right text for YOUR file directory.
+
+#you will also need to save it as an object in R. You should name it the same thing as the dataframe that you call throughout your exploratory analysis if you have already started. For example, you would want to save it as the object 'Fisheries' if you were to use read.csv() for the fish data from the ANOVA exercise.
+```
+
+Note: the exact path will be dependent on where you upload the file in the JupyterHub directory. For example, if you upload your .csv file for the final project to the workspace, then you would instead use...:
+
+```{r}
+#If the data is in the workspace instead, you would only specify to that particular folder, see below.
+#So compared to the previous example the '/workspace/BIO240A/BIO240ASp24/Data' part has been removed. 
+
+#you will need to replace the first set of ??? with your davidson user ID (all lowercase)
+#and you will need to replace the second set of ??? with the name of the csv file. 
+data <- read.csv("/home/DAVIDSON/???/Workspace/???.csv")
+
